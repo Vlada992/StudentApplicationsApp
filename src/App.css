@@ -8,6 +8,7 @@ html {
   justify-content:center;
   margin-top:3%;
   background-color:rgb(245,245,245);
+  margin-bottom:30%;
 }
 
 
@@ -21,16 +22,20 @@ html {
 #displayAppId {
     display:flex;
     justify-content: center;
-    flex-direction:column
+    flex-direction:column;
+
 }
 
 #mainDiv {
   display:flex;
   justify-content: center;
-  flex-direction:column
-
+  flex-direction:column;
+  padding:5%;
 }
 
+/*#bodyDiv {
+   margin-bottom:45%;
+}*/
 
 form > label   {
   font-weight:700;
@@ -45,6 +50,12 @@ form > label   {
   padding-left:1.5%;
 }
 
+input[type='checkbox'] {
+  margin-left:1.5%;
+}
+
+
+
 
 #specLab {
   flex-wrap: wrap;
@@ -54,4 +65,10 @@ form > label   {
 
 #specLab > label {
   display:block;
+
+}
+
+
+#modalbtn {
+  margin-top:5%;
 }

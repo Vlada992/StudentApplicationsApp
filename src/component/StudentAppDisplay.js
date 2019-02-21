@@ -106,19 +106,20 @@ class StudentAppDisplay extends Component {
         />
 
         <label> Short Personal Presentation (e.g. reason for joining the program):</label>
-        <input 
-        name='personPresentation'  
-        type='text' 
+        <textarea 
+        name='personPresentation'   
+        onChange = {func.takeInpVal} 
+        rows='6'         
         placeholder='personal presentation'
-        onChange = {func.takeInpVal}
-        />
-
-        <textarea onChange = {func.takeInpVal} rows='6'></textarea> {/*this is test sto see something */}
+        >
+        </textarea> {/*this is test sto see something */}
 
 
         <label> Study from Home:
-        <input name='personFromHome' 
+        <input 
+        name='personFromHome' 
         type='checkbox'
+        value='true'
         onChange = {func.takeInpVal}
         />
         </label>
@@ -134,3 +135,13 @@ class StudentAppDisplay extends Component {
 }
 
 export default StudentAppDisplay;
+
+
+
+
+/*<input 
+        name='personPresentation'  
+        type='text' 
+        placeholder='personal presentation'
+        onChange = {func.takeInpVal}
+        />*/
