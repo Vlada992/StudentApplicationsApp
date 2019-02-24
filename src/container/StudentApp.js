@@ -3,6 +3,8 @@ import '../App.css';
 import StudentAppDisplay from '../component/StudentAppDisplay';
 import StudentApplyList from '../component/StudentApplyList';
 
+
+
 class StudentApp extends Component {
     constructor(props){
         super(props)
@@ -11,13 +13,19 @@ class StudentApp extends Component {
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
 
-        const localStorageStudentInfoObj = JSON.parse(localStorage.getItem('studentData1'));
-        console.log('local storage info studenataarray objekat:', localStorageStudentInfoObj);
-        this.lenArr= []
-        const storageArrLength  = JSON.parse(localStorage.getItem('arrLen')) || [];
-        this.lenArr = storageArrLength;
+        this.updatePersonInfo = this.updatePersonInfo.bind(this);
+        this.returnNewVal = this.returnNewVal.bind(this);
+        this.deletePersonFromStorage = this.deletePersonFromStorage.bind(this);
+
+
+
+
+
+        this.studentObj1 = {};
+        this.inputNames = [];
 
         this.state = {
+            personSeparator:'',
             personName:'',
             personEmail:'',
             personAge:'',
@@ -28,67 +36,100 @@ class StudentApp extends Component {
             personSkills:'',
             personPresentation:'',
             personFromHome:'false',
-            show: false
+            show: false,
+            isEditing:false
         }
+
     };
 
-    takeInpVal(event){ //ovde se uzimaju vrednosti [name], value i stavljaju u state 
+    takeInpVal(event){ 
         const {name, value} = event.target
+        this.inputNames.push(name)
         console.log(name, value)
         this.setState({
             [name]: value,
         });
     };
 
-    submitApp(event){  //submit funkcija, tu se pravi sve
-        event.preventDefault();
-        this.lenArr.push('submmited')
-        localStorage.setItem('arrLen', JSON.stringify(this.lenArr)) //localStorage for checking number of submits
-        console.log('lenArr:', this.lenArr, this.lenArr.length)
 
-        let  studentsInfo1= [], studentsInfoNew= [],  studentObj =  {};      //studentObj
+
+    submitApp(event){ 
+        event.preventDefault();    
 
         for(var prop in this.state){
-        if(prop[0] === 'p'){ //proverava ako je prop.charAt(0)  jednak sa p, sto znaci da se salje u local iz this.state samo propsvezano za info iz forme
-         Object.defineProperty(studentObj, prop, {value: this.state[prop], enumerable:true})
-        }
-        }
+        let studOb = this.studentObj1, thirdArg = {value: this.state[prop], enumerable:true}
+        if(prop[0] === 'p') Object.defineProperty(studOb, prop, thirdArg)
+        };
 
-        localStorage.setItem(`studentObj${this.lenArr.length ? this.lenArr.length : null}`, JSON.stringify(studentObj)) //ovde pravi new obj za svaki submit
-        studentsInfo1.push(studentObj); //i salje ga ovde u Array.
-        localStorage.setItem("studentData1", JSON.stringify(studentsInfo1)); //An Array, pushed obj in
-        
+        var studLocalObj = localStorage.getItem("StudentInfo");
+        if (studLocalObj === null) studLocalObj= [];
+        else studLocalObj = JSON.parse(studLocalObj);
+
+        studLocalObj.push(this.studentObj1);
+        studLocalObj = JSON.stringify(studLocalObj);
+        localStorage.setItem("StudentInfo", studLocalObj);
 
 
-        /* NEDOVRSENO ****** pokusavam dole da napravim, da na prvi FORM submit sacuva info o jednoj osobi i onda da 
-        sacuva i za svaku sledecu osobu, trazili su da bude u array, a ja sam stavio u Array objekte sa informacijama.
-        samo da provalim kako da tacno zovem dinamicno lepo varijable kao na liniji 59 gore.
-        Sad imam objekte za svaki submit i to cuvam, ali SAMO je problemcic kako da ih ubacim te objekte unutar GLAVNOG array ili da budu
-        svaki u svom Arrayu
-        */
-        if(this.lenArr > 0){
-        localStorage.setItem("studentDataNew", JSON.stringify(studentsInfoNew)); //An Array, pushed obj in
-        }
-        /*NEDOVRSENO*************** */
-        //posalji novo.
+       this.inputNames.map(eachVal =>{ 
+            if(this.child[eachVal].value !== undefined) {
+            console.log('svaki:', this.child[eachVal])
+            this.child[eachVal].value  = '';
+            }
+        })
     };
 
 
 
+
     handleClose() {
-        this.setState({ show: false }); //to je za bootstrap modal
+        this.setState({ show: false }); 
     }
-    
+
+
     handleShow() {
-        this.setState({ show: true }); //same bootstrap modal
+        this.setState({ show: true });
     }
+
+
+    updatePersonInfo(event){
+        console.log('it\'s very clearly that its updated')
+        const {name, value, placeholder} = event.target
+        console.log('UPDEJTOVANO:', name)
+        console.log('updejt', value, 'placehold', placeholder)
+
+       let studentLocalStorageInfo = JSON.parse(localStorage.getItem('StudentInfo'))
+       console.log('to je lokalno:', studentLocalStorageInfo);
+      var newLoc = studentLocalStorageInfo.map((each, ind)=> {
+         if(each.name === placeholder){
+
+           return each.name = value;
+         }
+       })
+       console.log('newLoc', newLoc)
+       //localStorage.setItem('StudentInfo', JSON.stringify(newLoc))
+    }
+
+
+    returnNewVal(){
+        this.setState({
+            isEditing:false
+        })
+    };
+
+
+
+    deletePersonFromStorage(event){
+        const {name, value, placeholder} = event.target
+        console.log(name, value, placeholder)
+    }
+
 
       
     render(){
     return (
       <div id='bodyDiv'>
-        <StudentAppDisplay  {...this}/>
-        <StudentApplyList {...this} />
+        <StudentAppDisplay {...this} ref={(node) => { this.child = node; }}/>
+        <StudentApplyList  {...this} />
       </div>
     )
   }

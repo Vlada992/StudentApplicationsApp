@@ -7,22 +7,84 @@ import { Button } from 'react-bootstrap';
 
 class StudentApplyList extends Component {
   render() {
-    let allP = this.props, displayList, localStorageStudentsInfo;
+    let allP = this.props, displayList = [], displayList1 = [], localStorageStudentsInfo
 
-    if(localStorage.getItem('studentData1') ){
-        localStorageStudentsInfo = JSON.parse(localStorage.getItem('studentData1'));
-        displayList = Object.keys(localStorageStudentsInfo[0]).map((val, ind)=> {
-        return <li key={ind}>{val}: {localStorageStudentsInfo[0][val]}</li>
-     });
+
+    if(localStorage.getItem('StudentInfo') != null ){
+        localStorageStudentsInfo = JSON.parse(localStorage.getItem('StudentInfo'));
+
+        for(let i =0; i < localStorageStudentsInfo.length; i++){
+        displayList.push( Object.keys(localStorageStudentsInfo[i]).map((val, ind) => {
+        return (
+        <React.Fragment>
+        {val === 'personSeparator' ? 
+        <><br></br>
+        <h1>
+          Person { localStorageStudentsInfo[i].personName.toUpperCase()}
+        </h1>
+        </>
+         : null}
+
+        <li key={ind}>
+        {val}: <strong>{localStorageStudentsInfo[i][val]}</strong>&nbsp;
+
+        <button onClick={allP.updatePersonInfo}>Update</button>
+        <button onClick={allP.deletePersonFromStorage}>Delete</button>
+
+
+        </li>
+        {val === 'personFromHome' ? <br></br> : null}
+        </React.Fragment>
+        )
+        })
+        ) //pushed here.
+
+        /******************************************************************* */
+
+        displayList1.push( Object.keys(localStorageStudentsInfo[i]).map((val, ind) => {
+        if(allP.state.isEditing){
+          return (
+            <React.Fragment>
+            {val === 'personSeparator' ? 
+            <><br></br>
+            <h1>
+              Person { localStorageStudentsInfo[i].personName.toUpperCase()}
+            </h1>
+            </>
+             : null}
+    
+            <li key={ind}>
+    
+            {val}: <input name={val} onChange={allP.updatePersonInfo} placeholder={localStorageStudentsInfo[i][val]}/>
+    
+            <button onClick={allP.returnNewVal}>Update</button>
+    
+            </li>
+            {val === 'personFromHome' ? <br></br> : null}
+            </React.Fragment>
+          )
+       }
+      })
+      )
+
+
+
+
+        /******************************************************************* */
+
+        }  //for loop
+
+
+
+        /* */
     }
-    //Ovo dole je uvezen Bootstrap Modal koji ce na click pokazivati informacije o aplikantima.
-    //Sad samo jedan verovatno cu i tu da pravim neki map/each da vraca za svaki submit nov modal
-    //za sad sve ide dobro osim toga sto ne znam kako da spojim dynamic name object i POSALJEM u Array za localStorage tamo u container/StudentApp.js
-    return (
-      <div>
 
-      <Button id='modalbtn' variant="primary" onClick={allP.handleShow}>
-          Launch demo modal
+    
+    return (
+  
+      <div>
+      <Button className='modalbtn' variant="primary" onClick={allP.handleShow}>
+          See list of all applicants
       </Button>
 
       <Modal show={allP.state.show} onHide={allP.handleClose}>
@@ -31,7 +93,8 @@ class StudentApplyList extends Component {
         </Modal.Header>
         <Modal.Body>
           <ul>
-          {displayList}
+          {/*{displayList }*/}
+          {allP.state.isEditing ? displayList1 : displayList}
           </ul>
         </Modal.Body>
 
@@ -44,9 +107,40 @@ class StudentApplyList extends Component {
           </Button>
         </Modal.Footer>
       </Modal>
+
+
       </div>
     );
   }
 }
 
 export default StudentApplyList;
+
+
+
+
+/*
+
+if(allP.state.isEditing){
+            return (
+              <React.Fragment>
+              {val === 'personSeparator' ? 
+              <><br></br>
+              <h1>
+                Person { localStorageStudentsInfo[i].personName.toUpperCase()}
+              </h1>
+              </>
+               : null}
+      
+              <li key={ind}>
+      
+              {val}: <input name={val} onChange={allP.updatePersonInfo} placeholder={localStorageStudentsInfo[i][val]}/>
+      
+              <button onClick={returnNewVal}>Update</button>
+      
+              </li>
+              {val === 'personFromHome' ? <br></br> : null}
+              </React.Fragment>
+            )
+         }
+*/

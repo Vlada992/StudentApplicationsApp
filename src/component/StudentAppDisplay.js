@@ -15,6 +15,7 @@ class StudentAppDisplay extends Component {
         type='text' 
         placeholder='Your name' 
         onChange = {func.takeInpVal}
+        ref={(node) => { this.personName = node; }}
         required
         />
 
@@ -25,6 +26,8 @@ class StudentAppDisplay extends Component {
         type='email' 
         placeholder='Your email' 
         onChange = {func.takeInpVal}
+        ref={(node) => { this.personEmail = node; }}
+
         required
         />
 
@@ -34,6 +37,8 @@ class StudentAppDisplay extends Component {
         type='number' 
         placeholder='Your age' 
         onChange = {func.takeInpVal}
+        ref={(node) => { this.personAge= node; }}
+
         required
         />
 
@@ -43,6 +48,7 @@ class StudentAppDisplay extends Component {
         type='text' 
         placeholder='Phone number' 
         onChange = {func.takeInpVal}
+        ref={(node) => { this.personNum = node; }}
         required
         />
 
@@ -75,7 +81,6 @@ class StudentAppDisplay extends Component {
         </label>
 
 
-
         <label> English Level:</label>
           <select name='personEngLevel' onChange = {func.takeInpVal}>
             <option value='Beginner'>Beginner</option>
@@ -93,6 +98,8 @@ class StudentAppDisplay extends Component {
         min="2018-01-01" 
         max="2018-12-31" 
         onChange = {func.takeInpVal}
+        ref={(node) => { this.personStartDate = node; }}
+
         required
         />
 
@@ -103,6 +110,8 @@ class StudentAppDisplay extends Component {
         type='text' 
         placeholder='your skills/courses' 
         onChange = {func.takeInpVal}
+        ref={(node) => { this.personSkills = node; }}
+
         />
 
         <label> Short Personal Presentation (e.g. reason for joining the program):</label>
@@ -111,6 +120,8 @@ class StudentAppDisplay extends Component {
         onChange = {func.takeInpVal} 
         rows='6'         
         placeholder='personal presentation'
+        ref={(node) => { this.personPresentation = node; }}
+
         >
         </textarea> {/*this is test sto see something */}
 
@@ -121,13 +132,13 @@ class StudentAppDisplay extends Component {
         type='checkbox'
         value='true'
         onChange = {func.takeInpVal}
+        ref={(node) => { this.personFromHome = node; }}
+
         />
         </label>
 
 
         <button  onClick={func.submitApp} >Submit Application</button>
-
-
         </form>
       </div>
     );
