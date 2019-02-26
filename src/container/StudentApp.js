@@ -17,15 +17,16 @@ class StudentApp extends Component {
         this.returnNewVal = this.returnNewVal.bind(this);
         this.deletePersonFromStorage = this.deletePersonFromStorage.bind(this);
 
+        this.changeVal= this.changeVal.bind(this);
 
 
 
+        //localStorage.removeItem('StudentInfo');
 
         this.studentObj1 = {};
         this.inputNames = [];
 
         this.state = {
-            personSeparator:'',
             personName:'',
             personEmail:'',
             personAge:'',
@@ -37,7 +38,10 @@ class StudentApp extends Component {
             personPresentation:'',
             personFromHome:'false',
             show: false,
-            isEditing:false
+            isEditing:false,
+            updateName:'',
+            updateVal:'',
+            updateNameUniq:''
         }
 
     };
@@ -54,7 +58,7 @@ class StudentApp extends Component {
 
 
     submitApp(event){ 
-        event.preventDefault();    
+        //event.preventDefault();    
 
         for(var prop in this.state){
         let studOb = this.studentObj1, thirdArg = {value: this.state[prop], enumerable:true}
@@ -64,18 +68,15 @@ class StudentApp extends Component {
         var studLocalObj = localStorage.getItem("StudentInfo");
         if (studLocalObj === null) studLocalObj= [];
         else studLocalObj = JSON.parse(studLocalObj);
-
         studLocalObj.push(this.studentObj1);
         studLocalObj = JSON.stringify(studLocalObj);
         localStorage.setItem("StudentInfo", studLocalObj);
 
-
-       this.inputNames.map(eachVal =>{ 
+       /*this.inputNames.map(eachVal =>{ 
             if(this.child[eachVal].value !== undefined) {
-            console.log('svaki:', this.child[eachVal])
             this.child[eachVal].value  = '';
             }
-        })
+        })*/
     };
 
 
@@ -83,53 +84,60 @@ class StudentApp extends Component {
 
     handleClose() {
         this.setState({ show: false }); 
-    }
+    };
 
 
     handleShow() {
         this.setState({ show: true });
-    }
+    };
 
 
     updatePersonInfo(event){
-        console.log('it\'s very clearly that its updated')
-        const {name, value, placeholder} = event.target
-        console.log('UPDEJTOVANO:', name)
-        console.log('updejt', value, 'placehold', placeholder)
-
+       this.setState({isEditing:true})
+       const { name, value, placeholder} = event.target
        let studentLocalStorageInfo = JSON.parse(localStorage.getItem('StudentInfo'))
-       console.log('to je lokalno:', studentLocalStorageInfo);
-      var newLoc = studentLocalStorageInfo.map((each, ind)=> {
-         if(each.name === placeholder){
 
-           return each.name = value;
-         }
-       })
-       console.log('newLoc', newLoc)
-       //localStorage.setItem('StudentInfo', JSON.stringify(newLoc))
-    }
+       studentLocalStorageInfo.map((each, ind, arr) => {
+         if(each[name] === placeholder) each[name] = value; 
+         return;
+       });
+       localStorage.setItem('StudentInfo', JSON.stringify(studentLocalStorageInfo))
+    };
 
+
+    changeVal(event){
+        const { name, value, placeholder} = event.target
+       // console.log('SVI ZAJEDNO', name, value)
+        this.setState({
+            isEditing:true,
+            updateName:name,
+            updateVal:value.length
+        })
+    };  
 
     returnNewVal(){
-        this.setState({
-            isEditing:false
-        })
+        this.setState({isEditing:false})
     };
 
 
 
     deletePersonFromStorage(event){
         const {name, value, placeholder} = event.target
-        console.log(name, value, placeholder)
-    }
+        let studentLocalStorageInfo1 = JSON.parse(localStorage.getItem('StudentInfo'));
+
+       studentLocalStorageInfo1.map((each, ind, arr) => {
+         if(each[name] === value) return  studentLocalStorageInfo1.splice(ind, ind)
+       })
+       localStorage.setItem('StudentInfo', JSON.stringify(studentLocalStorageInfo1))
+       this.setState({ isEditing:false})
+    };
 
 
-      
     render(){
     return (
       <div id='bodyDiv'>
         <StudentAppDisplay {...this} ref={(node) => { this.child = node; }}/>
-        <StudentApplyList  {...this} />
+        <StudentApplyList  {...this}  />/ 
       </div>
     )
   }

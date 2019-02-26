@@ -56,7 +56,7 @@ class StudentAppDisplay extends Component {
         <label id='specLab'> Preferred Way of Communication:
         <label id ='labRadio'>
 
-        <label> E-mail:
+        <label className='lblradio'> E-mail:
         <input 
         name='personContactStyle'  
         type='radio' 
@@ -65,8 +65,9 @@ class StudentAppDisplay extends Component {
         value= 'email'
         required
         />
+    
         </label>
-        <label> Phone:
+        <label className='lblradio' > Phone:
         <input 
         name='personContactStyle'  
         type='radio' 
@@ -123,7 +124,7 @@ class StudentAppDisplay extends Component {
         ref={(node) => { this.personPresentation = node; }}
 
         >
-        </textarea> {/*this is test sto see something */}
+        </textarea>
 
 
         <label> Study from Home:
@@ -133,8 +134,8 @@ class StudentAppDisplay extends Component {
         value='true'
         onChange = {func.takeInpVal}
         ref={(node) => { this.personFromHome = node; }}
-
         />
+
         </label>
 
 
@@ -146,13 +147,3 @@ class StudentAppDisplay extends Component {
 }
 
 export default StudentAppDisplay;
-
-
-
-
-/*<input 
-        name='personPresentation'  
-        type='text' 
-        placeholder='personal presentation'
-        onChange = {func.takeInpVal}
-        />*/
