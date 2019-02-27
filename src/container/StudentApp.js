@@ -12,16 +12,11 @@ class StudentApp extends Component {
         this.submitApp = this.submitApp.bind(this);
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
-
         this.updatePersonInfo = this.updatePersonInfo.bind(this);
         this.returnNewVal = this.returnNewVal.bind(this);
         this.deletePersonFromStorage = this.deletePersonFromStorage.bind(this);
-
         this.changeVal= this.changeVal.bind(this);
 
-
-
-        //localStorage.removeItem('StudentInfo');
 
         this.studentObj1 = {};
         this.inputNames = [];
@@ -40,26 +35,19 @@ class StudentApp extends Component {
             show: false,
             isEditing:false,
             updateName:'',
-            updateVal:'',
-            updateNameUniq:''
+            updateVal:''
         }
-
     };
 
     takeInpVal(event){ 
         const {name, value} = event.target
         this.inputNames.push(name)
-        console.log(name, value)
-        this.setState({
-            [name]: value,
-        });
+        this.setState({ [name]: value});
     };
 
 
 
     submitApp(event){ 
-        //event.preventDefault();    
-
         for(var prop in this.state){
         let studOb = this.studentObj1, thirdArg = {value: this.state[prop], enumerable:true}
         if(prop[0] === 'p') Object.defineProperty(studOb, prop, thirdArg)
@@ -71,14 +59,7 @@ class StudentApp extends Component {
         studLocalObj.push(this.studentObj1);
         studLocalObj = JSON.stringify(studLocalObj);
         localStorage.setItem("StudentInfo", studLocalObj);
-
-       /*this.inputNames.map(eachVal =>{ 
-            if(this.child[eachVal].value !== undefined) {
-            this.child[eachVal].value  = '';
-            }
-        })*/
     };
-
 
 
 
@@ -106,8 +87,7 @@ class StudentApp extends Component {
 
 
     changeVal(event){
-        const { name, value, placeholder} = event.target
-       // console.log('SVI ZAJEDNO', name, value)
+        const { name, value} = event.target
         this.setState({
             isEditing:true,
             updateName:name,
@@ -122,8 +102,8 @@ class StudentApp extends Component {
 
 
     deletePersonFromStorage(event){
-        const {name, value, placeholder} = event.target
-        let studentLocalStorageInfo1 = JSON.parse(localStorage.getItem('StudentInfo'));
+        const {name, value} = event.target
+        let studentLocalStorageInfo1 = JSON.parse(localStorage.getItem('StudentInfo'))
 
        studentLocalStorageInfo1.map((each, ind, arr) => {
          if(each[name] === value) return  studentLocalStorageInfo1.splice(ind, ind)
@@ -131,6 +111,9 @@ class StudentApp extends Component {
        localStorage.setItem('StudentInfo', JSON.stringify(studentLocalStorageInfo1))
        this.setState({ isEditing:false})
     };
+
+
+  
 
 
     render(){

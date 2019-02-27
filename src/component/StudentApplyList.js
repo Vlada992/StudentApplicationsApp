@@ -3,6 +3,7 @@ import '../App.css';
 import { Modal } from 'react-bootstrap';
 import { Button, Image } from 'react-bootstrap';
 import pen1 from "../images/penUpdate3.png";
+
 import del1 from '../images/del1.png'
 
 
@@ -25,14 +26,14 @@ class StudentApplyList extends Component {
         <React.Fragment>
         {val === 'personName' ?
         <h1>Person { persName} 
-         <input type='image' value={localStorageStudentsInfo[i][val]} name={val} onClick={allP.deletePersonFromStorage} src={del1} />
+         <input  type='image' value={localStorageStudentsInfo[i][val]} name={val} onClick={allP.deletePersonFromStorage} src={del1} />
         </h1> 
         : null }
 
 
         <li  key={ind}>
         <span>{val}:  <strong>{localStorageStudentsInfo[i][val]}</strong></span>
-        &nbsp;<input type='image' className='btnDel' value={localStorageStudentsInfo[i][val]} name={val} onClick={allP.changeVal} src={pen1}  />
+        &nbsp;<input  type='image' className='btnDel' value={localStorageStudentsInfo[i][val]} name={val} onClick={allP.changeVal} src={ pen1 }  />
         </li>
         </React.Fragment>
         )
